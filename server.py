@@ -1,7 +1,15 @@
 from flask import Flask, request, jsonify
-import json
 
 app = Flask(__name__)
+
+
+def unpack_list(ls):
+    unpacked_list = []
+    for i in range(0, len(ls)):
+        for item in ls[i]:
+            unpacked_list.append(item)
+
+    return unpacked_list
 
 
 @app.route("/test", methods=["POST"])
@@ -12,7 +20,9 @@ def test_endpoint():
             data = request.get_json()
 
             # Process JSON
+            print(unpack_list(data["points"]))
             print(data["flag"])
+
             if data["flag"]:
 
                 response = {"message": "JSON data received successfully", "data": {"var": 1}}
