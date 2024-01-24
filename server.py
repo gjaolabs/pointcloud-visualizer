@@ -1,36 +1,29 @@
 from flask import Flask, request, jsonify
+from utils import helpers
+from utils import visualize
 
 app = Flask(__name__)
-
-
-def unpack_list(ls):
-    unpacked_list = []
-    for i in range(0, len(ls)):
-        for item in ls[i]:
-            unpacked_list.append(item)
-
-    return unpacked_list
 
 
 @app.route("/test", methods=["POST"])
 def test_endpoint():
     if request.method == "POST":
         try:
-            # Get JSON data from the request
+            # Get JSON data from the POST request
             data = request.get_json()
 
             # Process JSON
-            print(unpack_list(data["points"]))
-            print(data["flag"])
-
             if data["flag"]:
 
                 response = {"message": "JSON data received successfully", "data": {"var": 1}}
             else:
                 response = {"message": "JSON data received successfully", "data": {"var": None}}
+            #
+            print(helpers.unpack_list(data["points"]))
+            print(data["flag"])
+            visualize.visualizer_function(data["path"])
 
-                # Return response
-
+            # Return response
             return jsonify(response), 202
 
         except Exception as e:
