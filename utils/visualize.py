@@ -1,25 +1,33 @@
 import numpy as np
 import open3d as o3d
+from utils import helpers
+import asyncio
+
+# point_cloud_file_path = "../test_data/point_cloud_data.asc"
+# point_file_path = "../test_data/points.npy"
 
 
-def visualizer_function(file_path):
-    # Step 1: Load the point cloud from the .asc file
-    # file_path = '../test_data/point_cloud_data.asc'
-    point_cloud_data = np.loadtxt(file_path, delimiter=' ')
+def visualizer_function(point_cloud_file_path, point_file_path):
+    # Load the point cloud and the point to be checked and return modified(xyz) point cloud and matching points
+    point_cloud_data, matching_points, flag = helpers.check_points(point_cloud_file_path, point_file_path)
 
-    # Step 2: Extract XYZ coordinates from the loaded data
-    xyz = point_cloud_data[:, :3]
-    print(xyz)
-    # Step 3: Create an Open3D point cloud
+    # Create Open3D point cloud
     point_cloud = o3d.geometry.PointCloud()
-    point_cloud.points = o3d.utility.Vector3dVector(xyz)
+    point_cloud.points = o3d.utility.Vector3dVector(point_cloud_data)
 
-    # Step 4: Visualize the point cloud
-    o3d.visualization.draw_geometries([point_cloud])
+    # Assign color for matching points (black)
+    matching_color = [0, 0, 0]
+    matching_colors = np.full_like(matching_points, matching_color)
 
+    # Create an Open3D point cloud for matching points
+    matching_cloud = o3d.geometry.PointCloud()
+    matching_cloud.points = o3d.utility.Vector3dVector(matching_points)
+    matching_cloud.colors = o3d.utility.Vector3dVector(matching_colors)
 
-def load_points(points_path):
-    points = np.load(points_path)
-    print(points)
+    # Visualize the point cloud and matching points
+    o3d.visualization.draw_geometries([matching_cloud, point_cloud])
 
-# load_points('../test_data/points.npy')
+    return flag
+
+# Example usage:
+# visualizer_function(point_cloud_file_path, point_file_path)

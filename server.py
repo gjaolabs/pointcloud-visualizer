@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from utils import helpers
 from utils import visualize
 
 app = Flask(__name__)
@@ -13,15 +12,15 @@ def test_endpoint():
             data = request.get_json()
 
             # Process JSON
+            # Execute visualizer function, get flag
+
+            returned_flag = visualize.visualizer_function(data["cloud_path"], data["points_path"])
+
             if data["flag"]:
 
-                response = {"message": "JSON data received successfully", "data": {"var": 1}}
+                response = {"message": "JSON data received successfully", "data": {"var": 1, "flag": returned_flag}}
             else:
-                response = {"message": "JSON data received successfully", "data": {"var": None}}
-            #
-            print(helpers.unpack_list(data["points"]))
-            print(data["flag"])
-            visualize.visualizer_function(data["path"])
+                response = {"message": "JSON data received successfully", "data": {"var": None, "flag": returned_flag}}
 
             # Return response
             return jsonify(response), 202
