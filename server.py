@@ -5,8 +5,8 @@ import threading
 app = Flask(__name__)
 
 
-def run_visualizer(cloud_path, points_path):
-    visualize.visualizer_function(cloud_path, points_path)
+def run_visualizer(point_cloud_data, point_data):
+    visualize.visualizer_function(point_cloud_data, point_data)
 
 
 @app.route("/test", methods=["POST"])
@@ -17,8 +17,11 @@ def test_endpoint():
             data = request.get_json()
 
             # Process JSON
+            # Unpack data
+            point_cloud_data, point_data = functions.load_data(data["cloud_path"], data["points_path"])
+
             # Get flag
-            returned_flag = functions.return_flag(data["cloud_path"], data["points_path"])
+            returned_flag = functions.check_matching_points(point_cloud_data, point_data)
 
             if data["flag"]:
                 response = {"message": "JSON data received successfully", "data": {"var": 1, "flag": returned_flag}}
@@ -26,7 +29,7 @@ def test_endpoint():
                 response = {"message": "JSON data received successfully", "data": {"var": None, "flag": returned_flag}}
 
             # Run the visualization function in a separate thread
-            threading.Thread(target=run_visualizer, args=(data["cloud_path"], data["points_path"])).start()
+            threading.Thread(target=run_visualizer, args=(point_cloud_data, point_data)).start()
 
             # Return response
             return jsonify(response), 202
