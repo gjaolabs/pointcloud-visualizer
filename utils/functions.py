@@ -10,8 +10,6 @@ def check_matching_points(point_cloud_data, point_data):
 
 
 def return_flag(point_cloud_file_path, point_file_path):
-    # Flag for use in API
-    is_point = True
     # Load point cloud and point
     point_cloud_data, point_data = load_data(point_cloud_file_path, point_file_path)
     # Get matching points
@@ -20,23 +18,25 @@ def return_flag(point_cloud_file_path, point_file_path):
     # Filter duplicates
     unique_matching_points = np.unique(matching_points)
 
-    for item in point_data:
-        if item not in unique_matching_points:
-            is_point = False
-            break
+    # for item in point_data:
+    #     if item not in unique_matching_points:
+    #         is_point = False
+    #         break
 
-    return is_point
+
+    return unique_matching_points.size == point_data.size
+
 
 
 def load_data(point_cloud_file_path, point_file_path):
-    # Load the point cloud data from the .asc file
+    # Load the point cloud data from the .asc file as a numpy array
     point_cloud_data = np.loadtxt(point_cloud_file_path, delimiter=' ')
 
-    # Extract XYZ coordinates from the loaded data
+    # Extract XYZ coordinates from the numpy array
     point_cloud_data = point_cloud_data[:, :3]
-
+    # Load numpy array
     point_data = np.load(point_file_path)
-
+    # Return the point cloud and (potential) matching point numpy arrays
     return point_cloud_data, point_data
 
 

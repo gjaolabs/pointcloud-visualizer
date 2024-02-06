@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from utils import helpers, visualize
+from utils import functions, visualize
 import threading
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def test_endpoint():
 
             # Process JSON
             # Get flag
-            returned_flag = helpers.return_flag(data["cloud_path"], data["points_path"])
+            returned_flag = functions.return_flag(data["cloud_path"], data["points_path"])
 
             if data["flag"]:
                 response = {"message": "JSON data received successfully", "data": {"var": 1, "flag": returned_flag}}
@@ -38,4 +38,4 @@ def test_endpoint():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5050, debug=True)
