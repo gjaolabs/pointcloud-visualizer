@@ -45,10 +45,10 @@ Configure an endpoint tool like Postman to interact with the PointCloud Visualiz
 
 ### 7. Make a POST Request
 
-Make a POST request to the specified endpoint and port (Flask default is port 5000; for this current implementation we use port 5050) with the `/test` endpoint, sending a JSON object in the request body as specified in `post.json`.
+Using Postman, make a POST request to the specified endpoint and port (Flask default is port 5000; for this current implementation we use port 5050) with the `/test` endpoint, sending a JSON object in the request body as specified in `post.json`.
 
 ## Example Usage
-
+An alternative to sending the request with Postman, can be achieved by using the cURL command line tool:
 ```bash
 curl -X POST http://localhost:5050/test -H "Content-Type: application/json" -d @post.json
 ```
@@ -56,7 +56,6 @@ curl -X POST http://localhost:5050/test -H "Content-Type: application/json" -d @
 Feel free to replace `http://localhost:5050` with your actual server information.
 
 Now you're ready to visualize your point clouds with the PointCloud Visualizer! If you encounter any issues, please refer to the documentation or raise an issue on the repository.
-Certainly! Here's the final chapter added to the README:
 
 ## Important Notes
 
